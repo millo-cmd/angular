@@ -23,4 +23,10 @@ export class PartidasService {
  }
 
 
+
+
+  crearPartida(partida: any) {
+    return this.httpClient.post(`${this.baseUrl}/partidas`, partida).toPromise();
+  }
+
 }

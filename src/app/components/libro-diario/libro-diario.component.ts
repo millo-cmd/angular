@@ -6,79 +6,111 @@ import { PartidasService } from '../../services/partidas.service';
 @Component({
   selector: 'app-libro-diario',
   templateUrl: './libro-diario.component.html',
-  styleUrl: './libro-diario.component.css'
+  styleUrls: ['./libro-diario.component.css']
 })
-export class LibroDiarioComponent  implements OnInit {
+export class LibroDiarioComponent implements OnInit {
 
-  data:any
-  dataPartida :any
-  cuentasSevices = inject(DiarioServiceService)
-  partidasServices = inject(PartidasService)
-  formularioCuenta : FormGroup
+  data: any;
+  dataPartida: any;
+  cuentasSevices = inject(DiarioServiceService);
+  partidasServices = inject(PartidasService);
+  formularioCuenta: FormGroup;
+  formularioPartida: FormGroup;
+  formularioLinea: FormGroup;
 
-noPartida:number
-contador: number = 0
-contadorPartida: number = 0
-accounts: any[] = []
-partidas: any[] = []
+  nuevaLinea: any = { cuenta: '', debe: null, haber: null };
+  asientos: any[] = []; // Array de asientos
 
- constructor() {
-  this.formularioCuenta = new FormGroup ({
-    nombre: new FormControl(),
-    saldo: new FormControl(),
-    tipo: new FormControl(),
-  })
-  this.noPartida = 1
-
- }
+  lineas: any[] = [];
+  cuentaId:any
+  cuentaNombre:any
+  debeLinea:any
+  haberLinea:any
+  formIdNombre:any
 
 
- addAccount() {
-  this.contador++;
-  this.accounts = Array(this.contador).fill(0)
-}
+  constructor() {
+    this.formularioCuenta = new FormGroup({
+      nombre: new FormControl(),
+      saldo: new FormControl(),
+      tipo: new FormControl(),
+    });
 
+    this.formularioPartida = new FormGroup({
+      fecha: new FormControl(),
+      descripcion: new FormControl(),
+    });
+    this.formularioLinea = new FormGroup({
+      cuenta: new FormControl(),
+      debe: new FormControl(),
+      haber: new FormControl(),
+      id: new FormControl()
+    });
 
- ngOnInit(){
+  }
 
-  this.getCuentas()
-  this.getPartidas()
-  console.log(this.data)
-}
- 
- async getCuentas(){
-  const respuetaGetCuentas = await this.cuentasSevices.obtenerCuentas()
-  this.data = respuetaGetCuentas
- }
- async getPartidas(){
-  const respuetaGetPartidas = await this.partidasServices.obtenerPatidas()
-  this.dataPartida = respuetaGetPartidas
-  console.log(this.dataPartida)
- }
+  addLinea() {
 
- sendFile():void{
-  const body = new FormData()
+    this.cuentaId = this.formIdNombre.split('/')[0]
+    this.cuentaNombre = this.formIdNombre.split('/')[1]
+    console.log(this.cuentaNombre)
 
-  body.append('nombre',this.formularioCuenta.value.nombre)
-  body.append('saldo',this.formularioCuenta.value.saldo)
-  body.append('tipo',this.formularioCuenta.value.tipo)
-  console.log(body)
- this.cuentasSevices.crearCuentas(body).subscribe(res =>{
-  this.formularioCuenta.reset()
-  console.log(res), this.getCuentas()})
- }
+    this.lineas.push({ cuenta : this.cuentaId ,nombre: this.cuentaNombre, debe: this.debeLinea, haber:  this.haberLinea});
+    console.log(this.lineas);
 
+    this.limpiarLinea();
+  }
 
- async CrearAnio(){
-  const res = await this.cuentasSevices.crearAccount(this.formularioCuenta.value)
-  console.log(res)
-  this.getCuentas()
+  limpiarLinea() {
+    this.haberLinea = null;
+    this.debeLinea = null;
+    this.formIdNombre = null
+    this.cuentaId = null
+  }
 
-}
+  ngOnInit() {
+    this.getCuentas();
+    this.getPartidas();
+  }
 
-  lineas = []
+  async getCuentas() {
+    const respuetaGetCuentas = await this.cuentasSevices.obtenerCuentas();
+    this.data = respuetaGetCuentas;
+  }
 
- funcion(){
+  async getPartidas() {
+    const respuetaGetPartidas = await this.partidasServices.obtenerPatidas();
+    this.dataPartida = respuetaGetPartidas;
+  }
 
- }
+  sendFile(): void {
+    const body = new FormData();
+    body.append('nombre', this.formularioCuenta.value.nombre);
+    body.append('saldo', this.formularioCuenta.value.saldo);
+    body.append('tipo', this.formularioCuenta.value.tipo);
+
+    this.cuentasSevices.crearCuentas(body).subscribe(res => {
+      this.formularioCuenta.reset();
+      this.getCuentas();
+    });
+  }
+
+  async crearPartida() {
+    const partida = {
+      fecha: this.formularioPartida.value.fecha,
+      descripcion: this.formularioPartida.value.descripcion,
+      asientos: this.lineas.map(linea => ({
+        cuenta: linea.cuenta,
+        debe: linea.debe,
+        haber: linea.haber
+      }))
+    };
+
+    const res = await this.partidasServices.crearPartida(partida);
+    this.lineas = [];
+    this.formularioPartida.reset();
+    this.getPartidas();
+  }
+
+  
 }
