@@ -54,13 +54,6 @@
       </div>
     </div>
 
-    @for (os of data ; track $index) {
-      <h1>{{os.nombre}}</h1>
-
-    }
-
-
-
     <div class="container hoja">
         <div class="container">
             <table class="table">
@@ -75,26 +68,23 @@
                 <tbody>
                   <tr>
                     <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>aña</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>aña</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>asdfasdf</td>
-                    <td>Tadfadsf</td>
-                    <td>aññima</td>
+                    <th>
+                      <select class="form-select form-select-sm" aria-label="Small select example" style="width: 2hv;">
+                        <option selected>Cuenta</option>
+                        @for (opciones of data; track data._id) {
+                          <option value="{{ opciones._id}}"> {{ opciones.nombre }} </option>
+                        }
+                      </select>
+                    </th>
+                    <th>
+                        <input type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">              
+                    </th>
+                    <th>
+                      <input type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">
+                    </th>
                   </tr>
                 </tbody>
               </table>
         </div>
     </div>
 </div>
-
-<h2>prueba adfadsf</h2>
