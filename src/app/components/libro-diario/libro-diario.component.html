@@ -55,8 +55,13 @@
     </div>
 
     <div class="container hoja">
+      
+      
+      @for (item of dataPartida; track $index) {
+
         <div class="container">
-            <table class="table">
+          @for (itemAsientos of item.asientos; track $index) {
+          <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
@@ -66,25 +71,34 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <th>
-                      <select class="form-select form-select-sm" aria-label="Small select example" style="width: 2hv;">
-                        <option selected>Cuenta</option>
-                        @for (opciones of data; track data._id) {
-                          <option value="{{ opciones._id}}"> {{ opciones.nombre }} </option>
-                        }
-                      </select>
-                    </th>
-                    <th>
-                        <input type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">              
-                    </th>
-                    <th>
-                      <input type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-        </div>
+                    <tr>
+                      <th scope="row">1</th>
+                      <th>
+                        <select class="form-select form-select-sm" aria-label="Small select example" style="width: 2hv;">
+                          <option selected>Cuenta</option>
+                          @for (opciones of data; track data._id) {
+                            <option value="{{ opciones._id}}"> {{ opciones.nombre }} </option>
+                          }
+                        </select>
+                      </th>
+                      <th>
+                        <h1>{{itemAsientos.cuenta.nombre}}</h1>
+                          <input  type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">              
+                      </th>
+                      <th>
+                        <input type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">
+                      </th>
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              }
+            </div>
+          }
+
+
+            
     </div>
+
+
 </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { DiarioServiceService } from '../../services/diario-service.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { PartidasService } from '../../services/partidas.service';
 
 @Component({
   selector: 'app-libro-diario',
@@ -10,7 +11,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 export class LibroDiarioComponent  implements OnInit {
 
   data:any
+  dataPartida :any
   cuentasSevices = inject(DiarioServiceService)
+  partidasServices = inject(PartidasService)
   formularioCuenta : FormGroup
 
  constructor() {
@@ -25,12 +28,18 @@ export class LibroDiarioComponent  implements OnInit {
  ngOnInit(){
 
   this.getCuentas()
+  this.getPartidas()
   console.log(this.data)
 }
  
  async getCuentas(){
   const respuetaGetCuentas = await this.cuentasSevices.obtenerCuentas()
   this.data = respuetaGetCuentas
+ }
+ async getPartidas(){
+  const respuetaGetPartidas = await this.partidasServices.obtenerPatidas()
+  this.dataPartida = respuetaGetPartidas
+  console.log(this.dataPartida)
  }
 
  sendFile():void{
