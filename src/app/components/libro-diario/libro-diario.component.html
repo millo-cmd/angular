@@ -54,10 +54,8 @@
       </div>
     </div>
 
-    <div class="container hoja">
-      
-      
-      @for (item of dataPartida; track $index) {
+  @for (item of dataPartida; track $index) {
+    <div class="container hoja" style="margin-bottom: 25px;">
 
         <div class="container">
           
@@ -73,7 +71,7 @@
                 @for (itemAsientos of item.asientos; track $index) {
                 <tbody>
                     <tr>
-                      <th scope="row">1</th>
+                      <th scope="row"> {{ $index }} </th>
                       <th>
                         <p>{{itemAsientos.cuenta.nombre}}</p>
                       </th>
@@ -89,16 +87,15 @@
                 }
                 </table>
             </div>
-          }
-
 </div>
+}
 <br>
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo">Crear Partida</button>
 
           <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-              <div class="modal-content">
+              <div class="modal-content contenedor">
                 <div class="modal-header">
                   <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nueva Cuenta</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -106,25 +103,36 @@
                 <div class="modal-body">
                   <form [formGroup]="formularioCuenta" >
                     <div class="row">
-                      <div class="mb-3 col">
-                        <label for="recipient-name" class="col-form-label">Cuenta:</label>
-                        <select class="form-select form-select-sm" aria-label="Small select example" style="width: 2hv;">
-                          <option selected>Cuenta</option>
-                          @for (opciones of data; track data._id) {
-                            <option value="{{ opciones._id}}"> {{ opciones.nombre }} </option>
-                          }
-                        </select>
-                      </div>
-                      <!-- seto es el saldo DEBE -->
-                      <div class="mb-3 col">
-                        <label for="recipient-name" class="col-form-label">Debe:</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                      </div>
-                      <!-- esto es saldo haber -->
-                      <div class="mb-3 col">
-                        <label for="recipient-name" class="col-form-label">Haber:</label>
-                        <input type="text" class="form-control" id="recipient-name">
-                      </div>
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Cuenta</th>
+                            <th scope="col">Debe</th>
+                            <th scope="col">Haber</th>
+                          </tr>
+                        </thead>
+
+                        @for (cuentas of lineas; track $index) {
+                          <tbody>
+                            <tr>
+                              <th scope="row">1</th>
+                              <th>
+                                <p>añaño</p>
+                              </th>
+                              <th>
+                                  <input  type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">              
+                              </th>
+                              <th>
+                                <input type="email" class="form-control inputDeb" id="exampleFormControlInput1" placeholder="00.00">
+                              </th>
+                            </tr>
+                            
+                          </tbody>
+                        }
+                        </table>
+                        <br>
+                        <button type="button" class="btn btn-primary" (click)="CrearAnio()">Crear linea</button>
                     </div>
                   </form>
                 </div>

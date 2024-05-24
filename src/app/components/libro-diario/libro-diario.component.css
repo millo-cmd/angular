@@ -19,3 +19,8 @@ h2{
 .inputDeb{
     width: 100px;
 }
+
+.contenedor {
+ height: 50vh;
+ width: 80vh;
+}
