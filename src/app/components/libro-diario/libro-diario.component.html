@@ -113,7 +113,7 @@
                           </tr>
                         </thead>
 
-                        @for (cuentas of lineas; track $index) {
+                        @for (cuentas of accounts; track $index) {
                           <tbody>
                             <tr>
                               <th scope="row">1</th>
@@ -132,7 +132,7 @@
                         }
                         </table>
                         <br>
-                        <button type="button" class="btn btn-primary" (click)="CrearAnio()">Crear linea</button>
+                        <button type="button" class="btn btn-primary" (click)="addAccount()">Crear linea</button>
                     </div>
                   </form>
                 </div>

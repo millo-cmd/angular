@@ -16,13 +16,27 @@ export class LibroDiarioComponent  implements OnInit {
   partidasServices = inject(PartidasService)
   formularioCuenta : FormGroup
 
+noPartida:number
+contador: number = 0
+contadorPartida: number = 0
+accounts: any[] = []
+partidas: any[] = []
+
  constructor() {
   this.formularioCuenta = new FormGroup ({
     nombre: new FormControl(),
     saldo: new FormControl(),
     tipo: new FormControl(),
   })
+  this.noPartida = 1
+
  }
+
+
+ addAccount() {
+  this.contador++;
+  this.accounts = Array(this.contador).fill(0)
+}
 
 
  ngOnInit(){
