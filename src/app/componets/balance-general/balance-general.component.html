@@ -1,0 +1,64 @@
+<div class="container mt-4">
+    <h2>Balance General</h2>
+  
+    <h3>Activos</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Cuenta</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let activo of balance.activos | keyvalue">
+          <td>{{ activo.key }}</td>
+          <td>{{ activo.value }}</td>
+        </tr>
+        <tr>
+          <td><strong>Total Activos</strong></td>
+          <td><strong>{{ balance.totalActivos }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h3>Pasivos</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Cuenta</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pasivo of balance.pasivos | keyvalue">
+          <td>{{ pasivo.key }}</td>
+          <td>{{ pasivo.value }}</td>
+        </tr>
+        <tr>
+          <td><strong>Total Pasivos</strong></td>
+          <td><strong>{{ balance.totalPasivos }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <h3>Patrimonio</h3>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Cuenta</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let patrimonio of balance.patrimonio | keyvalue">
+          <td>{{ patrimonio.key }}</td>
+          <td>{{ patrimonio.value }}</td>
+        </tr>
+        <tr>
+          <td><strong>Total Patrimonio</strong></td>
+          <td><strong>{{ balance.totalPatrimonio }}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

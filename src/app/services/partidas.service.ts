@@ -29,4 +29,12 @@ export class PartidasService {
     return this.httpClient.post(`${this.baseUrl}/partidas`, partida).toPromise();
   }
 
+ 
+  revertirPartida(id:any){
+    return firstValueFrom(
+      this.httpClient.post<any>(`${this.baseUrl}/partidas/contrapartida/${id}`,{})
+    )
+  }
 }
+
+

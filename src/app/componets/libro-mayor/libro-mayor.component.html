@@ -1,0 +1,34 @@
+<!-- libro-mayor.component.html -->
+<div class="container mt-5">
+    <h2>Libro Mayor</h2>
+    <div *ngFor="let key of objectKeys(libroMayor)" class="card mb-3">
+      <div class="card-header">
+        <h3>{{ libroMayor[key].cuenta }} ({{ libroMayor[key].tipo }})</h3>
+        <p>Saldo Inicial: {{ libroMayor[key].saldoInicial | currency:'Q.' }}</p>
+        <p>Saldo Final: {{ libroMayor[key].saldoFinal | currency:'Q.' }}</p>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Descripción</th>
+              <th>Debe</th>
+              <th>Haber</th>
+              <th>Saldo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let movimiento of libroMayor[key].movimientos">
+              <td>{{ movimiento.fecha | date }}</td>
+              <td>{{ movimiento.descripcion }}</td>
+              <td>{{ movimiento.debe | currency:'Q.' }}</td>
+              <td>{{ movimiento.haber | currency:'Q.' }}</td>
+              <td>{{ movimiento.saldo | currency:'Q.' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  

@@ -1,0 +1,26 @@
+<div class="container mt-4">
+    <h2>Balance de Saldos</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Cuenta</th>
+          <th>Tipo</th>
+          <th>Saldo Inicial</th>
+          <th>Debe</th>
+          <th>Haber</th>
+          <th>Saldo Final</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let saldo of saldos">
+          <td>{{ saldo.cuenta }}</td>
+          <td>{{ saldo.tipo }}</td>
+          <td>{{ saldo.saldoInicial !== null ? saldo.saldoInicial : 0 }}</td>
+          <td>{{ saldo.debe }}</td>
+          <td>{{ saldo.haber }}</td>
+          <td>{{ saldo.saldoFinal }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

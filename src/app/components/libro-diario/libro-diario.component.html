@@ -1,41 +1,43 @@
 <h2>Libro diario</h2>
-
 <br>
 
 <div class="container">
-    <div class="container">
-        <div class="d-flex justify-content-center align-items-center">
-            <div class="row">
-                <div class="col">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Crear cuenta</button>
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-dark">Generar informe</button>
-                </div>  
+    <!-- Alertas -->
+    <div *ngIf="alerta" class="alert alert-{{ alerta.tipo }} alert-dismissible fade show" role="alert">
+      {{ alerta.mensaje }}
+      <button type="button" class="btn-close" aria-label="Close" (click)="cerrarAlerta()"></button>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mb-3">
+        <div class="row">
+            <div class="col">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAccountModal">Crear cuenta</button>
             </div>
+            <div class="col">
+                <button type="button" class="btn btn-dark">Generar informe</button>
+            </div>  
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="createAccountModal" tabindex="-1" aria-labelledby="createAccountModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nueva Cuenta</h1>
-     
+            <h1 class="modal-title fs-5" id="createAccountModalLabel">Agregar Nueva Cuenta</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form [formGroup]="formularioCuenta" >
+            <form [formGroup]="formularioCuenta">
               <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Cuenta:</label>
-                <input formControlName="nombre" type="text" class="form-control" id="recipient-name">
+                <label for="account-name" class="col-form-label">Cuenta:</label>
+                <input formControlName="nombre" type="text" class="form-control" id="account-name">
               </div>
               <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Saldo:</label>
-                <input formControlName="saldo" type="text" class="form-control" id="recipient-name">
+                <label for="account-balance" class="col-form-label">Saldo:</label>
+                <input formControlName="saldo" type="text" class="form-control" id="account-balance">
               </div>
               <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Tipo:</label>
+                <label for="account-type" class="col-form-label">Tipo:</label>
                 <select formControlName="tipo" class="form-select" aria-label="Default select example">
                   <option value="Activo">Activo</option>
                   <option value="Pasivo">Pasivo</option>
@@ -48,19 +50,23 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="sendFile()">Guardar</button>
+            <button type="button" class="btn btn-primary" (click)="crearAccount()">Guardar</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div *ngFor="let item of dataPartida; let i = index" class="container hoja" style="margin-bottom: 25px;">
+    <div *ngFor="let item of dataPartida; let i = index" class="container hoja mb-3">
         <div class="container">
+          <br>
+          <button type="button" class="btn btn-primary"(click)="revertirPartida(item._id)" >
+            Revertir Partida
+          </button>
           <table class="table">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Cuenta</th>
+                <th scope="col">{{ item.descripcion }}</th>
                 <th scope="col">Debe</th>
                 <th scope="col">Haber</th>
               </tr>
@@ -72,31 +78,42 @@
                 <td>{{ asiento.debe }}</td>
                 <td>{{ asiento.haber }}</td>
               </tr>
+              <tr>
+                <th scope="row"></th>
+                <td><strong>Total</strong></td>
+                <td><strong>{{ item.totalDebe }}</strong></td>
+                <td><strong>{{ item.totalHaber }}</strong></td>
+              </tr>
             </tbody>
           </table>
         </div>
     </div>
     <br>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2" data-bs-whatever="@mdo">Crear Partida</button>
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content contenedor">
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal1">
+      Crear Partida
+    </button>
+
+    <!-- Modal 1 -->
+    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nueva Partida</h1>
+            <h1 class="modal-title fs-5" id="createEntryModalLabel">Agregar Nueva Partida</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form [formGroup]="formularioPartida">
               <div class="mb-3">
-                <label for="partida-fecha" class="col-form-label">Fecha:</label>
-                <input formControlName="fecha" type="date" class="form-control" id="partida-fecha">
+                <label for="entry-date" class="col-form-label">Fecha:</label>
+                <input formControlName="fecha" type="date" class="form-control" id="entry-date">
               </div>
               <div class="mb-3">
-                <label for="partida-descripcion" class="col-form-label">Descripción:</label>
-                <textarea formControlName="descripcion" class="form-control" id="partida-descripcion"></textarea>
+                <label for="entry-description" class="col-form-label">Descripción:</label>
+                <textarea formControlName="descripcion" class="form-control" id="entry-description"></textarea>
               </div>
               <div class="row">
-                <table class="table">
+                <table class="table table-striped">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -105,65 +122,61 @@
                       <th scope="col">Haber</th>
                     </tr>
                   </thead>
-                  <tbody *ngFor="let linea of lineas; let index = index">
-                    <tr>
+                  <tbody>
+                    <tr *ngFor="let linea of lineas; let index = index">
                       <th>{{ index + 1 }}</th>
-                      <th>{{ linea.nombre}}</th>
-                      	<th>{{linea.debe}}</th>
-                        <th>{{linea.haber}}</th>
+                      <td>{{ linea.nombre }}</td>
+                      <td>{{ linea.debe }}</td>
+                      <td>{{ linea.haber }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <br>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalAddLine">
-                Launch demo modal
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2" data-bs-dismiss="modal">
+                Agregar línea
               </button>
-              <button type="button" class="btn btn-primary" (click)="addLinea()">Agregar línea</button>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary ms-2" (click)="crearPartida()">Guardar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 2 -->
+    <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="modal2Label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addLineModalLabel">Agregar Línea</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="formularioLinea">
+              <label class="normal">Cuenta</label>
+              <select [(ngModel)]="formIdNombre" formControlName="cuenta" class="normal" id="sucursal">
+                <option *ngFor="let item of data" [value]="item._id + '/' + item.nombre">{{ item.nombre }}</option>
+              </select>
+              <div class="item">
+                <label class="normal">Debe</label>
+                <input [(ngModel)]="debeLinea" formControlName="debe" type="number" class="normal">
+              </div>
+              <div class="item">
+                <label class="normal">Haber</label>
+                <input [(ngModel)]="haberLinea" formControlName="haber" type="number" class="normal">
+              </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary"  (click)="crearPartida()">Guardar</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal1" data-bs-dismiss="modal" (click)="addLinea()">
+              Agregar Línea a la Partida
+            </button>
           </div>
         </div>
       </div>
     </div>
-</div>
-
-
-<div class="modal fade" id="exampleModalAddLine" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="formularioLinea">
-        
-
-          <label class="normal">sucursal</label>
-
-          <select [(ngModel)]="formIdNombre"   formControlName="cuenta" name="tipoTienda" class="normal" id="sucursal">
-            @for (item of data; track $index) {
-              <option value="{{item._id  +'/'+ item.nombre}}">{{item.nombre}}</option>
-            }
-          </select>
-          <div class="item">
-            <label class="normal">debe</label>
-            <input [(ngModel)]="debeLinea"  formControlName="debe" id="whatsapp" title="input" type="number" class="normal">
-        </div>
-        <div class="item">
-          <label class="normal">haber</label>
-          <input [(ngModel)]="haberLinea"  formControlName="haber" id="whatsapp" title="input" type="number" class="normal">
-      </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button class="btn-close" data-bs-dismiss="modal" type="button" class="btn btn-primary" data-bs-target="#exampleModalLabel" (click)="addLinea()">Save changes</button>
-      </div>
-    </div>
-  </div>
 </div>
